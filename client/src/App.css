@@ -1,0 +1,18 @@
+.App {
+  height: 100vh;
+  margin: 0 10%;
+}
+
+.progress-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.data-container {
+  margin-top: 50px;
+  flex-direction: column;
+  display: flex;
+  gap: 20px;
+}
