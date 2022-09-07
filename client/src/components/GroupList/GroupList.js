@@ -6,7 +6,6 @@ import Button from "@mui/material/Button";
 import { GroupDialogs } from "../GroupDialogs";
 import { GroupBadge } from "../GroupBadge";
 import { ConfirmModal } from "../ConfirmModal";
-import "./styles.css";
 
 export const GroupList = ({
   groups,
@@ -25,7 +24,7 @@ export const GroupList = ({
   return (
     <Stack direction="row" spacing={2}>
       <GroupBadge
-        onSelect={onSelect}
+        onSelect={() => onSelect("All")}
         group={{ name: "All", tickers: tickers }}
         selectedGroup={!selectedGroup && { name: "All" }}
       />
@@ -33,7 +32,7 @@ export const GroupList = ({
         !!groups.length &&
         groups.map((group) => (
           <GroupBadge
-            onSelect={onSelect}
+            onSelect={() => onSelect(group.name)}
             group={group}
             selectedGroup={selectedGroup}
           />

@@ -5,17 +5,19 @@ import io from "socket.io-client";
 import LinearProgress from "@mui/material/LinearProgress";
 import Divider from "@mui/material/Divider";
 import { Typography } from "@mui/material";
-import { useGlobal } from "./global";
+import { useGlobal, useDispatch } from "./global";
+import { deleteGroupReducer, removeTickerReducer } from "./global/reducers";
 
 const socket = io("localhost:4000");
 
 function App() {
   const [data, setData] = useState([]);
-  const [tickers, setTickers] = useGlobal("tickers");
-  const [groups, setGroups] = useGlobal("groups");
+  const [, setTickers] = useGlobal("tickers");
+  const [groups] = useGlobal("groups");
   const [loading, setLoading] = useState(true);
   const [selectedGroup, setSelectedGroup] = useState("");
-  const [isConnected, setIsConnected] = useState(socket.connected);
+  const deleteGroupAction = useDispatch(deleteGroupReducer);
+  const removeTickerAction = useDispatch(removeTickerReducer);
 
   const selectGroup = (name) => {
     if (name === "All" && !selectedGroup) return;
@@ -25,42 +27,32 @@ function App() {
   };
 
   const deleteGroup = () => {
-    setGroups(groups.filter((item) => item.name !== selectedGroup.name));
+    deleteGroupAction({ name: selectedGroup.name });
     setSelectedGroup("");
   };
 
   const removeTicker = (ticker) => {
-    setSelectedGroup({
-      ...selectedGroup,
-      tickers: selectedGroup.tickers.filter((i) => i.name !== ticker),
+    setSelectedGroup((prevState) => {
+      return {
+        ...prevState,
+        tickers: prevState.tickers.filter((i) => i.name !== ticker),
+      };
     });
 
-    setGroups(
-      groups.map((item) =>
-        item.name === selectedGroup.name
-          ? { ...item, tickers: item.tickers.filter((i) => i.name !== ticker) }
-          : item
-      )
-    );
+    removeTickerAction({ name: selectedGroup.name, ticker: ticker });
   };
 
   useEffect(() => {
     socket.on("connect", () => {
-      setIsConnected(true);
       socket.emit("start");
     });
 
-    // setGroups([]);
     socket.on("ticker", (data) => {
       setData(data);
       if (loading) {
         setLoading(false);
         setTickers(data);
       }
-    });
-
-    socket.on("disconnect", () => {
-      setIsConnected(false);
     });
 
     return () => {

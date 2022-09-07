@@ -59,6 +59,7 @@ export const GroupDialogs = ({ showFirstDialog, closeFirstDialog }) => {
             />
             <Stack direction="row-reverse" spacing={2}>
               <Button
+                data-testid="save-btn1"
                 disabled={!groupName}
                 style={{ textTransform: "none" }}
                 variant="contained"
@@ -112,6 +113,7 @@ export const GroupDialogs = ({ showFirstDialog, closeFirstDialog }) => {
 
             <Stack direction="row-reverse" spacing={2}>
               <Button
+                data-testid="save-btn2"
                 disabled={selectedTickers.every((element) => element === false)}
                 style={{ textTransform: "none" }}
                 variant="contained"

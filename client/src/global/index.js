@@ -4,10 +4,12 @@ import init from "reactn-persist";
 import initialGlobal from "./initialGlobal";
 import persistedKeys from "./persistedKeys";
 import reactn from "reactn";
+
 export {
   getDispatch,
   getGlobal, // const token = getGlobal().auth.token
   resetGlobal, // resetGlobal()
+  useDispatch,
   setGlobal, // setGlobal({ value: 3 })
   useGlobal, // const [count, setCount] = useGlobal('count')
   withInit, // withInit(INITIAL_STATE, INITIAL_REDUCERS)(AppComponent)
